@@ -266,7 +266,7 @@ read_char:
                 cmp             rax, 1;if OK. in rax the size of read part is placed
                 jne             .error
                 xor             rax, rax;;rax = 0
-                mov             al, [rsp];al (half half half of rax) = read char
+                mov             rax, [rsp];al (half half half of rax) = read char
                 add             rsp, 1; return stack pointer
 
                 pop             rdi

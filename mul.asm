@@ -15,7 +15,7 @@ start:
                 call            read_long
                 lea             rdi, [rsp + 8 * 128]    ;move rdi to the beginning of the second operand
                 mov             rsi, rsp                ;move rsi to the beginning of the first operand
-                sub             rsp, 8 * 128 * 4        ;free space for answer
+                sub             rsp, 8 * 128 * 2        ;free space for answer
                 mov             r15, rdi
                 mov             rdi, rsp
                 add             rcx, rcx
