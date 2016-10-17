@@ -3,7 +3,7 @@
 
 #include <iosfwd>
 #include <cstdint>
-#include <vector>
+#include "my_vector.h"
 #include <memory>
 
 struct big_integer;
@@ -60,18 +60,11 @@ struct big_integer
     
     friend std::string to_string(big_integer const& a);
     
-    struct impl {
-        bool pos;
-        std::vector<int64_t> data;
-        impl ()
-        {
-            data = std::vector<int64_t>();
-            pos = true;
-        }
-    };
+        
     
 private:
-    std::shared_ptr<impl> num;
+    bool pos;
+    my_vector<int64_t> data;
     friend void add(big_integer& a, big_integer const& b);
     friend void my_invert(big_integer & r);
     friend size_t size(big_integer const& a);
