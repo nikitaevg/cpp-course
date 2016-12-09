@@ -2,6 +2,7 @@
 #define bind_h
 
 #include <functional>
+#include <string>
 
 template <int N>
 struct place_holder
@@ -21,33 +22,33 @@ struct bind_t
 private:
     
     typedef typename std::decay<Fp>::type F;
-    typedef std::tuple<Args...> tuple_;
+    typedef std::tuple<Args&&...> tuple_;
     
     F func;
     tuple_ args;
     
-    bind_t(F func, Args&&... args) :
+    bind_t(F func, Args... args) :
     func(func),
     args(std::forward<Args>(args)...)
     {
     }
-    
+
     template <typename old_Arg, typename... new_Args>
-    old_Arg arg_get(old_Arg&& old_arg, new_Args&&... new_args) const
+    auto&& arg_get(old_Arg& old_arg, new_Args&...) const
     {
         return old_arg;
-    }
+    };
     
     template <typename Fn, typename... old_Args, typename... new_Args>
-    typename Fn::result_type arg_get(const bind_t<Fn, old_Args...>& b, new_Args&&... new_args) const
+    auto arg_get(const bind_t<Fn, old_Args...> b, new_Args&... new_args) const
     {
         return b(std::forward<new_Args>(new_args)...);
     }
     
     template <int N, typename... new_Args>
-    typename std::tuple_element<N, std::tuple<new_Args...> >::type arg_get(const place_holder<N>, new_Args... new_args) const
+    auto&& arg_get(place_holder<N>, new_Args&... new_args) const
     {
-        return std::get<N>(std::make_tuple<new_Args...>(std::forward<new_Args>(new_args)...));
+        return std::get<N>(std::forward_as_tuple(new_args...));
     }
     
     template <int... N>
@@ -69,7 +70,7 @@ private:
     template <typename... new_Args, int... S>
     auto call_impl1(const sequence<S...>&&, new_Args&&... new_args) const
     {
-        return func(arg_get(std::get<S>(args), new_args...)...);
+        return func(std::forward<decltype(arg_get(std::get<S>(args), new_args...))>(arg_get(std::get<S>(args), new_args...))...);
     }
     
     template <typename... new_Args>
@@ -79,7 +80,7 @@ private:
     }
     
     template <typename F_, typename... Args_>
-    friend bind_t<F_, Args_...> bind(const F_&& func, Args_&&... args);
+    friend bind_t<F_, Args_...> bind(F_&& func, Args_&&... args);
     
 public:
     template <typename... new_Args>
@@ -91,7 +92,7 @@ public:
 };
 
 template <typename F, typename... Args>
-bind_t<F, Args...> bind(const F&& func, Args&&... args)
+bind_t<F, Args...> bind(F&& func, Args&&... args)
 {
     return bind_t<F, Args...>(func, std::forward<Args>(args)...);
 }
