@@ -70,7 +70,7 @@ private:
     template <typename... new_Args, int... S>
     auto call_impl1(const sequence<S...>&&, new_Args&&... new_args) const
     {
-        return func(std::forward<decltype(arg_get(std::get<S>(args), new_args...))>(arg_get(std::get<S>(args), new_args...))...);
+        return func(arg_get(std::get<S>(args), new_args...)...);
     }
     
     template <typename... new_Args>
