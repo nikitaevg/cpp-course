@@ -34,7 +34,7 @@ private:
     }
 
     template <typename old_Arg, typename... new_Args>
-    auto&& arg_get(old_Arg& old_arg, new_Args&...) const
+    auto& arg_get(old_Arg& old_arg, new_Args&...) const
     {
         return old_arg;
     };
@@ -46,7 +46,7 @@ private:
     }
     
     template <int N, typename... new_Args>
-    auto&& arg_get(place_holder<N>, new_Args&... new_args) const
+    auto& arg_get(place_holder<N>, new_Args&... new_args) const
     {
         return std::get<N>(std::forward_as_tuple(new_args...));
     }
