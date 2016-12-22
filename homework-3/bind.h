@@ -27,7 +27,7 @@ private:
     F func;
     tuple_ args;
     
-    bind_t(F&& func, Args&&... args) :
+    bind_t(F func, Args&&... args) :
     func(func),
     args(std::forward<Args>(args)...)
     {
