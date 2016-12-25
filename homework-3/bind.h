@@ -27,9 +27,9 @@ private:
     F func;
     tuple_ args;
     
-    bind_t(F func, Args&&... args) :
-    func(func),
-    args(std::forward<Args>(args)...)
+    bind_t(F&& func, Args&&... args) :
+    func(std::move(func)),
+    args(std::move(args)...)
     {
     }
 
@@ -94,7 +94,7 @@ public:
 template <typename F, typename... Args>
 bind_t<F, Args...> bind(F&& func, Args... args)
 {
-    return bind_t<F, Args...>(std::forward<F>(func), std::forward<Args>(args)...);
+    return bind_t<F, Args...>(std::move(func), std::move(args)...);
 }
 
 
