@@ -2,6 +2,7 @@
 #include <sstream>
 #include "big_integer.h"
 #include <vector>
+#include <algorithm>
 
 const int START_SIZE = 4;
 const long long BASE = ((int64_t) 1 << (int64_t) 31);
