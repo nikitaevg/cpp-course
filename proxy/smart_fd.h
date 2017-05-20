@@ -4,15 +4,24 @@
 
 struct smart_fd
 {
-    smart_fd(int fd);
+    explicit smart_fd(int fd);
+
     int close();
-    operator int();
-    smart_fd& operator=(const smart_fd&) = delete;
-    smart_fd(const smart_fd&) = delete;
-    void operator=(smart_fd&&);
-    smart_fd(smart_fd&&);
+
+    operator int() const;
+
+    smart_fd &operator=(const smart_fd &) = delete;
+
+    smart_fd(const smart_fd &) = delete;
+
+    void operator=(smart_fd &&);
+
+    smart_fd(smart_fd &&);
+
     ~smart_fd();
-    int operator* ();
+
+    int operator*() const;
+
 private:
     int fd;
 };

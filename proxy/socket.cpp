@@ -14,7 +14,7 @@ namespace
         return fd;
     }
 
-    void bind_socket(int fd, sockaddr* addr)
+    void bind_socket(int fd, sockaddr *addr)
     {
         int res = bind(fd, addr, sizeof(*addr));
         error(fd, "bind", -1);
@@ -27,11 +27,11 @@ namespace
     }
 }
 
-int accept_socket(int sock, sockaddr* addr)
+int accept_socket(int sock, sockaddr *addr)
 {
     socklen_t len = sizeof(*addr);
     int fd;
-    while(true)
+    while (true)
     {
         fd = accept(sock, addr, &len);
         if (fd == -1 && errno == ECONNABORTED)
@@ -43,7 +43,7 @@ int accept_socket(int sock, sockaddr* addr)
     return fd;
 }
 
-int create_socket(sockaddr* sockad)
+int create_socket(sockaddr *sockad)
 {
     int sock = make_socket(AF_INET, SOCK_STREAM, 0);
     bind_socket(sock, sockad);
@@ -57,4 +57,14 @@ void error(int to_check, std::string msg, int err_val)
         return;
     throw my_exception(msg);
 
+}
+
+sockaddr_in make_sockaddr(int family, uint32_t addr, uint16_t port)
+{
+    sockaddr_in sa;
+    sa.sin_family = family;
+    sa.sin_port = port;
+    sa.sin_addr.s_addr = addr;
+
+    return sa;
 }

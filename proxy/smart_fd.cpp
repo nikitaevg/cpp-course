@@ -16,12 +16,12 @@ int smart_fd::close()
     return fd;
 }
 
-int smart_fd::operator*()
+int smart_fd::operator*() const
 {
     return fd;
 }
 
-smart_fd::operator int()
+smart_fd::operator int() const
 {
     return fd;
 }
@@ -31,13 +31,13 @@ smart_fd::~smart_fd() noexcept
     this->close();
 }
 
-smart_fd::smart_fd(smart_fd&& rhs)
+smart_fd::smart_fd(smart_fd &&rhs)
 {
     this->fd = rhs.fd;
     rhs.fd = -1;
 }
 
-void smart_fd::operator=(smart_fd && rhs)
+void smart_fd::operator=(smart_fd &&rhs)
 {
     this->fd = rhs.fd;
     rhs.fd = -1;
